@@ -9,22 +9,46 @@ def get_gps(filename):
 		if 'GPSLatitude' in tag or 'GPSLongitude' in tag:
 			if not 'Ref' in tag:
 				string = str(data[tag])
+								
+				#sets first to degrees
+				first = string[1:string.find(',')]				
+				string  = string[string.find(',')+2:]
 				
-				dindex = string.find(',')
-				d = int(string[1:dindex])
+				#sets second to minutes
+				second = string[0:string.find(',')]				
+				string = string[string.find(',')+2:]
 				
-				string = string[dindex + 2:]
+				#sets third to seconds
+				third = string[0:string.find(']')]				
 				
-				m = int(string[0:string.find(',')])
+				#checks if degrees has a '/'
+				if first.find('/') != -1:
+					num = first[0:first.find('/')]					
+					denom = first[first.find('/') + 1:]					
+					d = float(num) / float(denom)
+				else:
+					d = int(first)
 				
-				string = string[string.find(',') + 2:]
+				#checks if minutes has a '/'
+				if second.find('/') != -1:
+					num = second[0:second.find('/')]					
+					denom = second[second.find('/') + 1:]					
+					m = float(num) / float(denom)
+				else:
+					m = int(second)				
 				
-				num = string[0:string.find('/')]
-				denom = string[string.find('/') + 1:string.find(']')]
-				
-				s = float(num) / float(denom)
+				#checks if seconds has a '/'
+				if third.find('/') != -1:
+					num = third[0:third.find('/')]					
+					denom = third[third.find('/') + 1:]					
+					s = float(num) / float(denom)
+				else:
+					s = int(third)
+					
 				DD = d + float(m)/60 + float(s)/3600
 				
-				coords.append(DD)
+				#latitude at position 0 then longitude at position 1
+				coords.insert(0, DD)
 	
 	return coords
+print get_gps("pic.jpg")
