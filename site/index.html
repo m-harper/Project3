@@ -7,6 +7,13 @@
       body { height: 100%; margin: 0; padding: 0 }
       #map-canvas { height: 100% }
     </style>
+
+	Lattitude: <input type="text" name="latText" id="latText">
+	Longitude: <input type="text" name="lonText" id="lonText">
+	<button type="button" id="addLatLonButton">add</button>
+	<button type="button" id="LatLonButton">plot</button>
+	<button type="button" id="clearButton">clear</button>
+
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBI2r_ZwESKtz3jMuwEpVAkzu1M0qeOJAw&sensor=false">
     </script>
@@ -17,15 +24,55 @@
           zoom: 13,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
-        var map = new google.maps.Map(document.getElementById("map-canvas"),
+        //removing var made it global... js is strange
+        map = new google.maps.Map(document.getElementById("map-canvas"),
             mapOptions);
+            /*
 		var marker = new google.maps.Marker({
 			position: new google.maps.LatLng(30.618446, -96.340726),
 			map: map,
 			title: "You are here"
-		});
+		});*/
       }
-      google.maps.event.addDomListener(window, 'load', initialize);
+      coords = new Array();
+      markers = new Array();
+
+		function addMarker()
+		{
+			var lat = document.getElementById("latText");
+			var lon = document.getElementById("lonText");
+			coords.push(lat.value);
+			coords.push(lon.value);
+		}
+		function placemarker()
+		{
+			while ( coords.length != 0)
+			{
+				var lon = coords.pop();
+				var lat = coords.pop();
+				var marker = new google.maps.Marker({
+					position: new google.maps.LatLng(parseFloat(lat), parseFloat(lon)),
+					map: map,
+					title: "You are here"
+				});
+
+				markers.push(marker);
+				google.maps.event.addListener(marker,"click",function(){});
+			}
+		}
+
+		function clearMarkers()
+		{
+			for (var i = 0; i < markers.length; i++)
+				markers[i].setMap(null);
+			while (markers.length != 0)
+				markers.pop();
+		}
+
+		var button = document.getElementById("clearButton").onclick = clearMarkers;
+		var button = document.getElementById("addLatLonButton").onclick = addMarker;
+		var button = document.getElementById("LatLonButton").onclick = placemarker;
+		google.maps.event.addDomListener(window, 'load', initialize);
     </script>
   </head>
   <body>
