@@ -6,6 +6,8 @@ def get_gps(filename):
 	coords = []
 	
 	for tag in data.keys():
+		#print tag
+		#print data[tag]
 		if 'GPSLatitude' in tag or 'GPSLongitude' in tag:
 			if not 'Ref' in tag:
 				string = str(data[tag])
@@ -49,6 +51,13 @@ def get_gps(filename):
 				
 				#latitude at position 0 then longitude at position 1
 				coords.insert(0, DD)
+			else:
+				hem =  str(data[tag])				
+				if hem == "S":
+					coords[0] = coords[0] * -1
+				if hem == "W":
+					coords[1] = coords[1] * -1
+					print "here"
 	
 	return coords
-print get_gps("pic.jpg")
+print get_gps("IMG_4692.jpg")
