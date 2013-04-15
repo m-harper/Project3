@@ -3,7 +3,11 @@
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+FLICKR_API_KEY = '7ae902f621ff7cd5ebdae9e7d56a712b'
+FLICKR_API_SECRET = '501eafea85d9459a'
+
 ADMINS = (
+    ('Matt', 'not_my_email')
     # ('Your Name', 'your_email@example.com'),
 )
 
@@ -123,7 +127,8 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
-    'django.contrib.admindocs',
+    #'django.contrib.admindocs',
+    #'flickr',
 )
 
 # A sample logging configuration. The only tangible logging
