@@ -1,4 +1,4 @@
-#!/home/matt/Documents/315/Project3/python/djangoenv/bin/python
+#!/home/ugrads/m/mharper/315/Project3/python/djangoenv/bin/python
 # EASY-INSTALL-ENTRY-SCRIPT: 'setuptools==0.6c11','console_scripts','easy_install'
 __requires__ = 'setuptools==0.6c11'
 import sys
