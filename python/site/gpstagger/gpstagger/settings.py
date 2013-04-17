@@ -1,5 +1,8 @@
 # Django settings for gpstagger project.
 
+#to create template directory dynamically (read: magically)
+import os.path
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -108,6 +111,11 @@ ROOT_URLCONF = 'gpstagger.urls'
 WSGI_APPLICATION = 'gpstagger.wsgi.application'
 
 TEMPLATE_DIRS = (
+	#dynamically set the template directory to directiory containing settings.py
+	# so...        ..../settings.py
+	# sets dir to  ..../templates/
+	os.path.join(os.path.dirname(__file__), 'templates').replace('\\','/'),
+	#'/home/ben/Desktop/Proj\ 3Project3/python/site/gpstagger/',
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -124,6 +132,8 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
+    #used for google maps
+    'django.contrib.gis',
 )
 
 # A sample logging configuration. The only tangible logging

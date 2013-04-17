@@ -1,4 +1,6 @@
 from django.conf.urls import patterns, include, url
+#import the hello world function
+from gpstagger.views import hello, gmapfunc
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -14,4 +16,8 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
+#	any url using hello/ runs the hello function
+#	HOORAY REGEX!
+	url(r'^hello/$', hello),
+	url(r'^map/$', gmapfunc),
 )
