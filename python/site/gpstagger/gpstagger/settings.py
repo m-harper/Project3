@@ -137,6 +137,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     #'django.contrib.admindocs',
     #'flickr',
+    #'mapPage'
     'django.contrib.admindocs',
     #used for google maps
     'django.contrib.gis',
