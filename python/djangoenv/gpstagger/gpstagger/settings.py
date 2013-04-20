@@ -84,6 +84,9 @@ STATICFILES_FINDERS = (
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'x*5%a=6q(b0-0b^we^-1u#+*m%4*0#^pgckpi)2ufw^=z-f@y+'
+FLICKR_API_KEY = '7ae902f621ff7cd5ebdae9e7d56a712b'
+FLICKR_API_SECRET = '501eafea85d9459a'
+FLICKR_ID = '94978868@N07'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
