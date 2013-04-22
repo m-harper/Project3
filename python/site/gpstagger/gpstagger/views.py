@@ -4,6 +4,8 @@ from django.http import HttpResponse
 #template function
 from django.shortcuts import render_to_response
 
+from django.contrib.auth import logout
+
 #google map django bindings
 #from django.contrib.gis.maps.google.gmap import GoogleMap
 #from django.contrib.gis.maps.google.overlays import GMarker, GEvent
@@ -15,22 +17,61 @@ from gpstagger.models import picture, make_picture
 #used for DB actions
 import DataBaseFunctions as DBF
 
+#from flickrlogin.models import photo_grabber
+
+
 #views receives some HttpResponse and returns an HttpResponse
 def hello(request):
 	return HttpResponse("Hello world")
 
+def hello(request):
+	return HttpResponse("Hello world")
+
+def importPhotosfunc(request):
+	#pg=photo_grabber
+	#coords = get_all_gps(uname)
+	#for coord in coords:
+	#	DBF.addPicture( make_picture( 'default_', coord[0], coord[1], 'http://127.0.0.1:8000/hello/'), request['userName'] )
+	return HttpResponse("Hello world")
+
+
 def gmapfunc(request):
-	#clear for testing
-	DBF.resetDB()
-	#add two test points to DB as JSON
-	DBF.addPicture( make_picture( 'default_', '10.42', '10.42', 'http://127.0.0.1:8000/hello/') )
-	DBF.addPicture( make_picture( 'default_', '-10.42', '10.42', 'http://127.0.0.1:8000/hello/') )
+	#get Current User
+	userName = request.session['userName']
 
 	#get all the pictures fromt the DataBase (as Python Objects)
-	pictures = DBF.getPictures()
+	pictures = DBF.getPictures(userName)
+
+	#create the Map
 	gmap = createGoogleMap( pictures )
+
 	return render_to_response('map.html', {'gmap':gmap,})
 
+def mapTest(request):
+	#spoof session
+	request.session['userName'] = 'fIFO'
+	userName = request.session['userName']
+
+	#add the new user and a couple photos
+	DBF.addUser(userName)
+	DBF.addPicture( make_picture( 'default_', "0", "0", 'http://127.0.0.1:8000/hello/'), userName )
+	DBF.addPicture( make_picture( 'default_', "-10", "-10", 'http://127.0.0.1:8000/hello/'), userName )
+	DBF.addPicture( make_picture( 'default_', "10", "10", 'http://127.0.0.1:8000/hello/'), userName )
+	DBF.addPicture( make_picture( 'default_', "10", "-10", 'http://127.0.0.1:8000/hello/'), userName )
+	DBF.addPicture( make_picture( 'default_', "-10", "10", 'http://127.0.0.1:8000/hello/'), userName )
+
+
+	#get all the user's pictures
+	pictures = DBF.getPictures(userName)
+
+	#create the Map
+	gmap = createGoogleMap( pictures )
+
+	#remove phony user
+	DBF.removeUser(userName)
+	logout(request)
+
+	return render_to_response('map.html', {'gmap':gmap,})
 
 #non-django GoogleMap v3 implementation. made to imitate django gis v2 version
 def createGoogleMap( pictures ):
