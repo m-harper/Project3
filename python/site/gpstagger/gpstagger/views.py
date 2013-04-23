@@ -24,6 +24,9 @@ import DataBaseFunctions as DBF
 def hello(request):
 	return HttpResponse("Hello world")
 
+def index(request):	
+	return render_to_response('index.html')
+	
 def hello(request):
 	return HttpResponse("Hello world")
 
