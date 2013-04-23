@@ -9,6 +9,7 @@ TEMPLATE_DEBUG = DEBUG
 FLICKR_API_KEY = '7ae902f621ff7cd5ebdae9e7d56a712b'
 FLICKR_API_SECRET = '501eafea85d9459a'
 
+
 ADMINS = (
     ('Matt', 'not_my_email')
     # ('Your Name', 'your_email@example.com'),
@@ -68,14 +69,15 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = "copyto/static"
+
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = '/static/'
 
 # Additional locations of static files
-STATICFILES_DIRS = (
+STATICFILES_DIRS = ('C:gpstagger/static',
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.

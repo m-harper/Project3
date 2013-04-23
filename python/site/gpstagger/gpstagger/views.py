@@ -25,6 +25,9 @@ def hello(request):
 	return HttpResponse("Hello world")
 
 def index(request):	
+	name = request.GET.get('name')	
+	print name
+	request.session['userName'] = name
 	return render_to_response('index.html')
 	
 def hello(request):
