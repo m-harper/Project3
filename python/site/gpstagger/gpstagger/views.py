@@ -2,7 +2,7 @@
 from django.http import HttpResponse
 
 #template function
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
 
 from django.contrib.auth import logout
 
@@ -27,7 +27,9 @@ def hello(request):
 def index(request):	
 	name = request.GET.get('name')	
 	print name
-	request.session['userName'] = name
+	if name is not None:
+		request.session['userName'] = name
+		return redirect('/mapTest')		
 	return render_to_response('index.html')
 	
 def hello(request):
@@ -44,7 +46,7 @@ def importPhotosfunc(request):
 def gmapfunc(request):
 	#get Current User
 	userName = request.session['userName']
-
+	
 	#get all the pictures fromt the DataBase (as Python Objects)
 	pictures = DBF.getPictures(userName)
 
@@ -57,7 +59,7 @@ def mapTest(request):
 	#spoof session
 	request.session['userName'] = 'fIFO'
 	userName = request.session['userName']
-
+	
 	#add the new user and a couple photos
 	DBF.addUser(userName)
 	DBF.addPicture( make_picture( 'default_', "0", "0", 'http://127.0.0.1:8000/hello/'), userName )
