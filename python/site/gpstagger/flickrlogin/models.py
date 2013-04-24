@@ -45,12 +45,18 @@ class photo_grabber(models.Model):
 		flickr = api(api_key=key, secret=secret)
 		tree = flickr.photos_getInfo(api_key=key, photo_id=photo_id)
 		index = self.find_title_index(tree)
+		if index == None:
+			return 'No title'
 		return tree[0][index].text
 
 	def get_gps(self, photo_id):
 		exif = self.get_exif(photo_id)
 		latitude = self.get_latitude(exif)
 		longitude = self.get_longitude(exif)
+		if longitude == None:
+			longitude = 0
+		if latitude == None:
+			latitude = 0
 		lat = self.convert_to_coords(latitude)
 		long = self.convert_to_coords(longitude)
 
