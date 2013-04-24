@@ -28,3 +28,10 @@ urlpatterns = patterns('',
 	url(r'^map/$', gmapfunc),
 	url(r'^mapTest/$', mapTest),
 )
+
+
+urlpatterns += patterns('', (
+	r'^static/(?P<path>.*)$',
+	'django.views.static.serve',
+	{'document_root': 'static'}
+))

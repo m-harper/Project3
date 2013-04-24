@@ -16,7 +16,7 @@ class photo_grabber(models.Model):
 				return i
 
 	def find_exif_tag_index(self, exif, label):
-z		for i in range(len(exif[0])):
+		for i in range(len(exif[0])):
 			if exif[0][i].attrib['label'] == label:
 				return i
 
@@ -37,7 +37,7 @@ z		for i in range(len(exif[0])):
 		return exiftree
 
 	def find_title_index(self, photo_tree):
-		for i in range(len(photo_tree)):
+		for i in range(len(photo_tree[0])):
 			if photo_tree[0][i].tag == 'title':
 				return i
 
@@ -46,7 +46,7 @@ z		for i in range(len(exif[0])):
 		tree = flickr.photos_getInfo(api_key=key, photo_id=photo_id)
 		index = self.find_title_index(tree)
 		return tree[0][index].text
-		
+
 	def get_gps(self, photo_id):
 		exif = self.get_exif(photo_id)
 		latitude = self.get_latitude(exif)
@@ -70,9 +70,9 @@ z		for i in range(len(exif[0])):
 		return float(degree) + float(minutes)/60 + float(seconds)/3600
 
 	def convert_GPS(self, (lat, long)):
-		
+
 		return (self.convert_to_coords(lat), self.convert_to_coords(long))
-		
+
 
 	def get_photo_list(self, photoset_id):
 		flickr = api(api_key=key, secret=secret)
@@ -119,21 +119,22 @@ z		for i in range(len(exif[0])):
 		farm = info[0].attrib['farm']
 		server = info[0].attrib['server']
 		sec = info[0].attrib['secret']
-		id = info[0].attrib['id']
-		return 'http://farm' + str(farm) + '.staticflickr.com/' + str(server) + '/' + str(id) + '_' + str(secret) + '.jpg'
+		idtag = info[0].attrib['id']
+		return 'http://farm' + str(farm) + '.staticflickr.com/' + str(server) + '/' + str(idtag) + '_' + str(sec) + '.jpg'
 
 	def get_all_photos(self, username):
 		sets = self.get_set_list(username)
+		photo_list = []
 		for set in sets:
 			photos = self.get_photo_list(set)
 			for photo in photos:
 				photo_list.append(photo)
 		Allphotodata = []
 		for photo in photo_list:
-			photo_dictionary = {}
-			photo_dictionary['gps'] = self.get_GPS(photo)
+			photo_dictionary = { 'gps':'gps', 'title':'title', 'href':'href', }
+			photo_dictionary['gps'] = self.get_gps(photo)
 			photo_dictionary['title'] = self.get_title(photo)
-			photo_dicttionary['href'] = self.get_url(photo)
+			photo_dictionary['href'] = self.get_url(photo)
 			Allphotodata.append(photo_dictionary)
 		return Allphotodata
 

@@ -34,11 +34,15 @@ def index(request):
 
 def importPhotos(request):
 	pg = photo_grabber()
-	coords = pg.get_all_gps( request.session['userName'] )
+	photos = pg.get_all_photos( request.session['userName'] )
 	DBF.addUser( request.session['userName'] )
-	for coord in coords:
-		print coord
-		DBF.addPicture( make_picture( 'default_', coord[1], coord[0], 'http://127.0.0.1:8000/hello/'), request.session['userName'] )
+	for photo in photos:
+		print photo
+		title = photo['title']
+		lat = (photo['gps'])[1]
+		lon = (photo['gps'])[0]
+		href = photo['href']
+		DBF.addPicture( make_picture( title, lat, lon, href ), request.session['userName'] )
 		#DBF.addPicture( make_picture( 'default_', coord[0], coord[1], 'http://127.0.0.1:8000/hello/'), request['userName'] )
 	return redirect('/map')
 	#return HttpResponse("Hello world")
