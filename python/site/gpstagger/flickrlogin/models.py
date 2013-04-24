@@ -16,7 +16,7 @@ class photo_grabber(models.Model):
 				return i
 
 	def find_exif_tag_index(self, exif, label):
-		for i in range(len(exif[0])):
+z		for i in range(len(exif[0])):
 			if exif[0][i].attrib['label'] == label:
 				return i
 
@@ -35,6 +35,17 @@ class photo_grabber(models.Model):
 		flickr = api(api_key=key, secret=secret)
 		exiftree = flickr.photos_getExif(api_key=key, photo_id=photo_id)
 		return exiftree
+
+	def find_title_index(self, photo_tree):
+		for i in range(len(photo_tree)):
+			if photo_tree[0][i].tag == 'title':
+				return i
+
+	def get_title(self, photo_id):
+		flickr = api(api_key=key, secret=secret)
+		tree = flickr.photos_getInfo(api_key=key, photo_id=photo_id)
+		index = self.find_title_index(tree)
+		return tree[0][index].text
 		
 	def get_gps(self, photo_id):
 		exif = self.get_exif(photo_id)
@@ -77,8 +88,9 @@ class photo_grabber(models.Model):
 		flickr = api(api_key=key, secret=secret)
 
 		# Convert the username to user id
-		user_id_etree = flickr.people_findByUsername(api_key=key, username=user)
-		userid = user_id_etree[0].attrib['id']
+		#user_id_etree = flickr.people_findByUsername(api_key=key, username=user)
+		#userid = user_id_etree[0].attrib['id']
+		userid = self.username_to_id(user)
 
 		# Get the list of photo set ids
 		list = []
@@ -86,6 +98,11 @@ class photo_grabber(models.Model):
 		for photoset in sets[0]:
 			list.append(photoset.attrib['id'])
 		return list
+
+	def username_to_id(self, username):
+		flickr = api(api_key=key, secret=secret)
+		usertree = flickr.people_findByUsername(api_key=key, username=username)
+		return usertree[0].attrib['id']
 
 	def get_all_gps(self, username):
 		coords = []
@@ -95,6 +112,31 @@ class photo_grabber(models.Model):
 			for photo in photos:
 				coords.append(self.get_gps(photo))
 		return coords
+
+	def get_url(self, photo_id):
+		flickr = api(api_key=key, secret=secret)
+		info = flickr.photos_getInfo(api_key=key, photo_id=photo_id)
+		farm = info[0].attrib['farm']
+		server = info[0].attrib['server']
+		sec = info[0].attrib['secret']
+		id = info[0].attrib['id']
+		return 'http://farm' + str(farm) + '.staticflickr.com/' + str(server) + '/' + str(id) + '_' + str(secret) + '.jpg'
+
+	def get_all_photos(self, username):
+		sets = self.get_set_list(username)
+		for set in sets:
+			photos = self.get_photo_list(set)
+			for photo in photos:
+				photo_list.append(photo)
+		Allphotodata = []
+		for photo in photo_list:
+			photo_dictionary = {}
+			photo_dictionary['gps'] = self.get_GPS(photo)
+			photo_dictionary['title'] = self.get_title(photo)
+			photo_dicttionary['href'] = self.get_url(photo)
+			Allphotodata.append(photo_dictionary)
+
+
 
 	def __unicode__(self):
 		return self.user_name
