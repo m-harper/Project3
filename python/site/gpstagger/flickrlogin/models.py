@@ -61,8 +61,12 @@ class photo_grabber(models.Model):
 		longitude = self.get_longitude(exif)
 		if longitude != 0:
 			long = self.convert_to_coords(longitude)
+		else:
+			long = 0
 		if latitude != 0:
 			lat = self.convert_to_coords(latitude)
+		else:
+			lat = 0
 		
 		return self.hemicheck(exif, (lat, long))
 
