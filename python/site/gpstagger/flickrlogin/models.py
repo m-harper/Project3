@@ -135,7 +135,7 @@ z		for i in range(len(exif[0])):
 			photo_dictionary['title'] = self.get_title(photo)
 			photo_dicttionary['href'] = self.get_url(photo)
 			Allphotodata.append(photo_dictionary)
-
+		return Allphotodata
 
 
 	def __unicode__(self):
