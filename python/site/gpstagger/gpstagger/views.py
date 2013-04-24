@@ -17,38 +17,40 @@ from gpstagger.models import picture, make_picture
 #used for DB actions
 import DataBaseFunctions as DBF
 
-#from flickrlogin.models import photo_grabber
+from flickrlogin.models import photo_grabber
 
 
 #views receives some HttpResponse and returns an HttpResponse
 def hello(request):
 	return HttpResponse("Hello world")
 
-def index(request):	
-	name = request.GET.get('name')	
+def index(request):
+	name = request.GET.get('name')
 	print name
 	if name is not None:
 		request.session['userName'] = name
-		return redirect('/mapTest')		
+		return redirect('/importPhotos')
 	return render_to_response('index.html')
-	
-def hello(request):
-	return HttpResponse("Hello world")
 
-def importPhotosfunc(request):
-	#pg=photo_grabber
-	#coords = get_all_gps(uname)
-	#for coord in coords:
-	#	DBF.addPicture( make_picture( 'default_', coord[0], coord[1], 'http://127.0.0.1:8000/hello/'), request['userName'] )
-	return HttpResponse("Hello world")
-
+def importPhotos(request):
+	pg = photo_grabber()
+	coords = pg.get_all_gps( request.session['userName'] )
+	DBF.addUser( request.session['userName'] )
+	for coord in coords:
+		print coord
+		DBF.addPicture( make_picture( 'default_', coord[1], coord[0], 'http://127.0.0.1:8000/hello/'), request.session['userName'] )
+		#DBF.addPicture( make_picture( 'default_', coord[0], coord[1], 'http://127.0.0.1:8000/hello/'), request['userName'] )
+	return redirect('/map')
+	#return HttpResponse("Hello world")
 
 def gmapfunc(request):
 	#get Current User
 	userName = request.session['userName']
-	
+
 	#get all the pictures fromt the DataBase (as Python Objects)
 	pictures = DBF.getPictures(userName)
+
+	print "PICTURES: {}".format(pictures)
 
 	#create the Map
 	gmap = createGoogleMap( pictures )
@@ -59,7 +61,7 @@ def mapTest(request):
 	#spoof session
 	request.session['userName'] = 'fIFO'
 	userName = request.session['userName']
-	
+
 	#add the new user and a couple photos
 	DBF.addUser(userName)
 	DBF.addPicture( make_picture( 'default_', "0", "0", 'http://127.0.0.1:8000/hello/'), userName )
@@ -67,7 +69,6 @@ def mapTest(request):
 	DBF.addPicture( make_picture( 'default_', "10", "10", 'http://127.0.0.1:8000/hello/'), userName )
 	DBF.addPicture( make_picture( 'default_', "10", "-10", 'http://127.0.0.1:8000/hello/'), userName )
 	DBF.addPicture( make_picture( 'default_', "-10", "10", 'http://127.0.0.1:8000/hello/'), userName )
-
 
 	#get all the user's pictures
 	pictures = DBF.getPictures(userName)

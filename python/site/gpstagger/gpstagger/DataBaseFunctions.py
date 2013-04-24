@@ -32,6 +32,7 @@ def getPicturesJSON( userName ):
 	conn = sqlite3.connect('picture.db')
 	c = conn.cursor()
 	string = 'SELECT json FROM {}'.format(userName)
+	print string
 	c.execute(string)
 	return c.fetchall()
 

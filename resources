@@ -1,0 +1,10 @@
+#tutorial for simple views
+#http://www.djangobook.com/en/2.0/chapter03.html
+#Django gmap tutorial:
+#http://jefurii.cafejosti.net/blog/2011/05/05/basic-google-maps-django/
+#GEOS required for gis
+#https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/geolibs/
+#GeoDjango library reference
+#https://docs.djangoproject.com/en/dev/ref/contrib/gis/
+#GoogleMap source
+#https://github.com/django/django/blob/master/django/contrib/gis/maps/google/gmap.py
