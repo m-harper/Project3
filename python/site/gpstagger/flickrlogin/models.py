@@ -71,10 +71,15 @@ class photo_grabber(models.Model):
 		return self.hemicheck(exif, (lat, long))
 
 	def hemicheck(self, exif, (lat, long)):
-		if not exif[0][self.find_exif_tag_index(exif, 'GPS Latitude Ref')][0].text == 'North':
-			lat = float(lat) * -1
-		if not exif[0][self.find_exif_tag_index(exif, 'GPS Longitude Ref')][0].text == 'East':
-			long = float(long) * -1
+		index1 = self.find_exif_tag_index(exif, 'GPS Latitude Ref')
+		if index1 != None:
+			if not exif[0][index1][0].text == 'North':
+				lat = float(lat) * -1
+				
+		index2 = self.find_exif_tag_index(exif, 'GPS Longitude Ref')
+		if index2 != None:
+			if not exif[0][index2][0].text == 'East':
+				long = float(long) * -1
 		return (lat, long)
 
 	def convert_to_coords(self, coord):
