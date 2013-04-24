@@ -21,10 +21,16 @@ class photo_grabber(models.Model):
 				return i
 
 	def get_longitude(self, exif):
-		return exif[0][self.find_long_index(exif)][0].text
+		index = self.find_long_index(exif)
+		if index == None:
+			return 0
+		return exif[0][index][0].text
 
 	def get_latitude(self, exif):
-		return exif[0][self.find_lat_index(exif)][0].text
+		index = self.find_lat_index(exif)
+		if index == None:
+			return 0
+		return exif[0][index][0].text
 
 	def get_hemisphere(self, exif):
 		lat = exif[0][self.find_exif_tag_index(exif, 'GPS Latitude Ref')][0].text
