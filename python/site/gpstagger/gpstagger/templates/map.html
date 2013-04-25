@@ -4,9 +4,16 @@
 
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <style type="text/css">
-      html { height: 100% }
+      html { height: 97% }
       body { height: 100%; margin: 0; padding: 0 }
       #map-canvas { height: 100% }
+	  div.center
+{
+  width: 200px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
     </style>
 
 <head>
@@ -14,7 +21,14 @@
 	{{ gmap.render }}
 </head>
 
-<body>
+<body>			
+	<div class = "center">
+		<div style="position: absolute; bottom: 0px;">		
+		<a href="/logout">Logout</a>
+		&nbsp&nbsp&nbsp
+		<a href="/deleteuser">Delete User</a>			
+		</div>
+	</div>
 	{{ gmap.body }}
 </body>
 

@@ -23,7 +23,15 @@ invalidUserName = 0
 #views receives some HttpResponse and returns an HttpResponse
 def hello(request):
 	return HttpResponse("Hello world")
+	
+def logout(request):
+	return redirect('/')
 
+def deleteuser(request):
+	userName = request.session['userName']
+	DBF.removeUser(userName)
+	return redirect('/')
+	
 def index(request):
 	global invalidUserName
 	name = request.GET.get('name')
@@ -108,7 +116,7 @@ def createGoogleMap( pictures ):
 		print event.trigger
 		marker.add_event(event)
 		markers.append(marker)
-	return GoogleMap(center=(0,0), zoom=1, markers=markers, key='AIzaSyBI2r_ZwESKtz3jMuwEpVAkzu1M0qeOJAw')
+	return GoogleMap(center=(0,0), zoom=3, markers=markers, key='AIzaSyBI2r_ZwESKtz3jMuwEpVAkzu1M0qeOJAw')
 
 #django GoogleMap v2 version
 #def createGoogleMap( pictures ):
