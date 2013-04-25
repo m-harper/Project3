@@ -19,22 +19,33 @@ import DataBaseFunctions as DBF
 
 from flickrlogin.models import photo_grabber
 
-
+invalidUserName = 0
 #views receives some HttpResponse and returns an HttpResponse
 def hello(request):
 	return HttpResponse("Hello world")
 
 def index(request):
+	global invalidUserName
 	name = request.GET.get('name')
 	print name
 	if name is not None:
 		request.session['userName'] = name
 		return redirect('/importPhotos')
-	return render_to_response('index.html')
+	if invalidUserName == 0:	
+		return render_to_response('index.html')
+	else:
+		return render_to_response('indexerror.html')
 
 def importPhotos(request):
+	global invalidUserName
 	pg = photo_grabber()
-	photos = pg.get_all_photos( request.session['userName'] )
+	try:
+		photos = pg.get_all_photos( request.session['userName'] )
+	except:
+		print "Invalid UserName!"
+		invalidUserName = 1
+		return redirect('/')
+	invalidUserName = 0	
 	DBF.addUser( request.session['userName'] )
 	for photo in photos:
 		print photo

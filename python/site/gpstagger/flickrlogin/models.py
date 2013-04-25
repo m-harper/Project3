@@ -119,8 +119,8 @@ class photo_grabber(models.Model):
 		return list
 
 	def username_to_id(self, username):
-		flickr = api(api_key=key, secret=secret)
-		usertree = flickr.people_findByUsername(api_key=key, username=username)
+		flickr = api(api_key=key, secret=secret)		
+		usertree = flickr.people_findByUsername(api_key=key, username=username)			
 		return usertree[0].attrib['id']
 
 	def get_all_gps(self, username):
