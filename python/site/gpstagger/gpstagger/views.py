@@ -24,7 +24,7 @@ invalidUserName = 0
 #views receives some HttpResponse and returns an HttpResponse
 def hello(request):
 	return HttpResponse("Hello world")
-	
+
 def logout(request):
 	return redirect('/')
 
@@ -32,7 +32,7 @@ def deleteuser(request):
 	userName = request.session['userName']
 	DBF.removeUser(userName)
 	return redirect('/')
-	
+
 def index(request):
 	global invalidUserName
 	name = request.GET.get('name')
@@ -40,7 +40,7 @@ def index(request):
 	if name is not None:
 		request.session['userName'] = name
 		return redirect('/importPhotos')
-	if invalidUserName == 0:	
+	if invalidUserName == 0:
 		return render_to_response('index.html')
 	else:
 		return render_to_response('indexerror.html')
@@ -54,23 +54,23 @@ def importPhotos(request):
 		print "Invalid UserName!"
 		invalidUserName = 1
 		return redirect('/')
-	invalidUserName = 0	
+	invalidUserName = 0
 	DBF.addUser( request.session['userName'] )
-	
-	LONGITUDE = 30
-	SEPARATOR_SPACE = 180 / len(photos)
+
+	LONGITUDE = -30
+	SEPARATOR_SPACE = 110 / len(photos)
 	count = 0
 	index = 0;
-	
+
 	for photo in photos:
 		print photo
 		title = photo['title']
 		lat = (photo['gps'])[1]
 		lon = (photo['gps'])[0]
 		if lat == 0 and lon == 0:
-			lon = LONGITUDE
-			lat = -90 + SEPARATOR_SPACE * count
-			count++
+			lat = LONGITUDE
+			lon = -65 + SEPARATOR_SPACE * count
+			count = count + 1
 		href = photo['href']
 		DBF.addPicture( make_picture( title, lat, lon, href ), request.session['userName'] )
 		#DBF.addPicture( make_picture( 'default_', coord[0], coord[1], 'http://127.0.0.1:8000/hello/'), request['userName'] )
