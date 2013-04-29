@@ -20,6 +20,7 @@ import DataBaseFunctions as DBF
 from flickrlogin.models import photo_grabber
 
 invalidUserName = 0
+
 #views receives some HttpResponse and returns an HttpResponse
 def hello(request):
 	return HttpResponse("Hello world")
@@ -55,11 +56,21 @@ def importPhotos(request):
 		return redirect('/')
 	invalidUserName = 0	
 	DBF.addUser( request.session['userName'] )
+	
+	LONGITUDE = 30
+	SEPARATOR_SPACE = 180 / len(photos)
+	count = 0
+	index = 0;
+	
 	for photo in photos:
 		print photo
 		title = photo['title']
 		lat = (photo['gps'])[1]
 		lon = (photo['gps'])[0]
+		if lat == 0 and lon == 0:
+			lon = LONGITUDE
+			lat = -90 + SEPARATOR_SPACE * count
+			count++
 		href = photo['href']
 		DBF.addPicture( make_picture( title, lat, lon, href ), request.session['userName'] )
 		#DBF.addPicture( make_picture( 'default_', coord[0], coord[1], 'http://127.0.0.1:8000/hello/'), request['userName'] )
