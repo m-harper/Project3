@@ -61,6 +61,7 @@ class GMarker:
 		self.lat = lat
 		self.lon = lon
 		self.title = title
+		self.data = {}
 
 		if event is None: self.event = event
 

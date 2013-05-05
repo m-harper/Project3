@@ -1,6 +1,7 @@
 import sqlite3
 import json
 
+#turn the given picture into a JSON representation and store it, by username, in a table
 def addPicture( picture, userName ):
 	conn = sqlite3.connect('picture.db')
 	c = conn.cursor()
@@ -9,6 +10,7 @@ def addPicture( picture, userName ):
 	conn.commit()
 	return
 
+#remove the given picture by name for the given user
 def removePicture( pictureName, userName ):
 	conn = sqlite3.connect('picture.db')
 	c = conn.cursor()
@@ -17,6 +19,7 @@ def removePicture( pictureName, userName ):
 	conn.commit()
 	return
 
+#retrieve from the database the specified user's picture by the given name
 def getPictureJSON( pictureName, userName):
 	conn = sqlite3.connect('picture.db')
 	c = conn.cursor()
@@ -24,10 +27,12 @@ def getPictureJSON( pictureName, userName):
 	c.execute(string, [pictureName])
 	return c.fetchall()[0][0]
 
+#return the python representation of the specified user's photo
 def getPicture( pictureName, userName ):
 	pictureJSON = getPictureJSON( pictureName, userName )
 	return json.loads(pictureJSON)
 
+#get all pictures for a user and return as JSON strings
 def getPicturesJSON( userName ):
 	conn = sqlite3.connect('picture.db')
 	c = conn.cursor()
@@ -36,6 +41,7 @@ def getPicturesJSON( userName ):
 	c.execute(string)
 	return c.fetchall()
 
+#get all pictures for a user and return as python object
 def getPictures( userName ):
 	picturesJSON = getPicturesJSON(userName)
 	picturesPYTHON = []
@@ -43,14 +49,15 @@ def getPictures( userName ):
 		picturesPYTHON.append(json.loads(picturesJSON[x][0]))
 	return picturesPYTHON
 
+#clear the database
 def resetDB():
 	conn = sqlite3.connect('picture.db')
 	c = conn.cursor()
-	#c.execute("DROP TABLE picturesTable ")
-	#c.execute("CREATE TABLE picturesTable (name, json)")
+	#code to drop all tables
 	conn.commit()
 	return
 
+#add a user to the database, if not already present
 def addUser( userName ):
 	conn = sqlite3.connect('picture.db')
 	c = conn.cursor()
@@ -59,6 +66,7 @@ def addUser( userName ):
 	conn.commit()
 	return
 
+#remove the specified user from the database, if present
 def removeUser( userName ):
 	conn = sqlite3.connect('picture.db')
 	c = conn.cursor()

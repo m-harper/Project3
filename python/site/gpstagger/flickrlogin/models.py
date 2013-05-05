@@ -67,7 +67,7 @@ class photo_grabber(models.Model):
 			lat = self.convert_to_coords(latitude)
 		else:
 			lat = 0
-		
+
 		return self.hemicheck(exif, (lat, long))
 
 	def hemicheck(self, exif, (lat, long)):
@@ -75,7 +75,7 @@ class photo_grabber(models.Model):
 		if index1 != None:
 			if not exif[0][index1][0].text == 'North':
 				lat = float(lat) * -1
-				
+
 		index2 = self.find_exif_tag_index(exif, 'GPS Longitude Ref')
 		if index2 != None:
 			if not exif[0][index2][0].text == 'East':
@@ -119,8 +119,8 @@ class photo_grabber(models.Model):
 		return list
 
 	def username_to_id(self, username):
-		flickr = api(api_key=key, secret=secret)		
-		usertree = flickr.people_findByUsername(api_key=key, username=username)			
+		flickr = api(api_key=key, secret=secret)
+		usertree = flickr.people_findByUsername(api_key=key, username=username)
 		return usertree[0].attrib['id']
 
 	def get_all_gps(self, username):
@@ -150,10 +150,11 @@ class photo_grabber(models.Model):
 				photo_list.append(photo)
 		Allphotodata = []
 		for photo in photo_list:
-			photo_dictionary = { 'gps':'gps', 'title':'title', 'href':'href', }
+			photo_dictionary = { 'gps':'gps', 'title':'title', 'href':'href', 'exifTree':'exifTree' }
 			photo_dictionary['gps'] = self.get_gps(photo)
 			photo_dictionary['title'] = self.get_title(photo)
 			photo_dictionary['href'] = self.get_url(photo)
+			photo_dictionary['exifTree'] = self.get_exif(photo)[0]
 			Allphotodata.append(photo_dictionary)
 		return Allphotodata
 
