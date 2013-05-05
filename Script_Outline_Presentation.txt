@@ -1,0 +1,64 @@
+
+315 Presentation Script
+
+
+Introduce team/selves
+WHAT IS THIS THING!?
+why would you want this / why is it useful?
+	what do we gain from this? further uses for the data (over time)
+	catagorization of photos spatially
+
+Features
+	Also demo at this time
+	Links to photo
+	logout
+	privacy conerns
+		delete user button
+		anyone can pull if they have the account name
+	photos that do not have gps data are still displayed
+	if user doesn't exist, won't crash
+
+future of product / extensibility
+	timeline
+	slideshows for specific days/locations
+
+
+Issues / Development
+	We learned
+		DJANGO framwork
+		python issues
+		javascript
+		html
+		SQLITE3
+	Translating gps data to hemispheres
+	GIS switch
+	template
+	database
+		uses JSON storage format
+	CSS textbox formatting
+
+Premise
+
+Features:
+	parse exif
+	display location on map or mid-atlantic
+	links to flickr url
+
+
+
+
+Intro	- MATT
+	Who we are, what, why
+
+Features - RYAN					Demo - MATT
+
+Extesibility - Ben
+
+Finish demo - MATT
+
+Issues
+	MATT
+	RYAN
+	BEN
+
+Conclusion - MATT
