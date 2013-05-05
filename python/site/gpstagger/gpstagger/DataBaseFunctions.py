@@ -5,7 +5,7 @@ import json
 def addPicture( picture, userName ):
 	conn = sqlite3.connect('picture.db')
 	c = conn.cursor()
-	string = 'INSERT INTO {} VALUES (?,?)'.format(userName)
+	string = 'INSERT OR IGNORE INTO {} VALUES (?,?)'.format(userName)
 	c.execute(string, [ picture['name'], json.dumps( picture, sort_keys=True, indent=1), ] )
 	conn.commit()
 	return
@@ -61,7 +61,7 @@ def resetDB():
 def addUser( userName ):
 	conn = sqlite3.connect('picture.db')
 	c = conn.cursor()
-	string = 'CREATE TABLE IF NOT EXISTS {} (name, json)'.format(userName)
+	string = 'CREATE TABLE IF NOT EXISTS {} (name PRIMARY KEY, json)'.format(userName)
 	c.execute( string )
 	conn.commit()
 	return
