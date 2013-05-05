@@ -142,7 +142,7 @@ INSTALLED_APPS = (
     #'mapPage'
     'django.contrib.admindocs',
     #used for google maps
-    'django.contrib.gis',
+    #'django.contrib.gis',
 )
 
 # A sample logging configuration. The only tangible logging
