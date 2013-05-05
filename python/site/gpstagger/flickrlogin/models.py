@@ -4,6 +4,10 @@ from gpstagger.settings import FLICKR_API_KEY as key, FLICKR_API_SECRET as secre
 
 class photo_grabber(models.Model):
 	user_name = models.CharField(max_length=50)
+	flickr = None
+
+	def __init__(self):
+		self.flickr = api(api_key=key, secret=secret)
 
 	def find_long_index(self, exif):
 		for i in range(len(exif[0])):
@@ -38,8 +42,8 @@ class photo_grabber(models.Model):
 		return (lat, long)
 
 	def get_exif(self, photo_id):
-		flickr = api(api_key=key, secret=secret)
-		exiftree = flickr.photos_getExif(api_key=key, photo_id=photo_id)
+		#flickr = api(api_key=key, secret=secret)
+		exiftree = self.flickr.photos_getExif(api_key=key, photo_id=photo_id)
 		return exiftree
 
 	def find_title_index(self, photo_tree):
@@ -48,8 +52,8 @@ class photo_grabber(models.Model):
 				return i
 
 	def get_title(self, photo_id):
-		flickr = api(api_key=key, secret=secret)
-		tree = flickr.photos_getInfo(api_key=key, photo_id=photo_id)
+		#flickr = api(api_key=key, secret=secret)
+		tree = self.flickr.photos_getInfo(api_key=key, photo_id=photo_id)
 		index = self.find_title_index(tree)
 		if index == None:
 			return 'No title'
@@ -94,8 +98,8 @@ class photo_grabber(models.Model):
 
 
 	def get_photo_list(self, photoset_id):
-		flickr = api(api_key=key, secret=secret)
-		phototree = flickr.photosets_getPhotos(api_key=key, photoset_id=photoset_id)
+		#flickr = api(api_key=key, secret=secret)
+		phototree = self.flickr.photosets_getPhotos(api_key=key, photoset_id=photoset_id)
 
 		photolist = []
 		for photo in phototree[0]:
@@ -104,7 +108,7 @@ class photo_grabber(models.Model):
 
 
 	def get_set_list(self, user):
-		flickr = api(api_key=key, secret=secret)
+		#flickr = api(api_key=key, secret=secret)
 
 		# Convert the username to user id
 		#user_id_etree = flickr.people_findByUsername(api_key=key, username=user)
@@ -113,14 +117,14 @@ class photo_grabber(models.Model):
 
 		# Get the list of photo set ids
 		list = []
-		sets = flickr.photosets_getList(api_key=key, user_id=userid)
+		sets = self.flickr.photosets_getList(api_key=key, user_id=userid)
 		for photoset in sets[0]:
 			list.append(photoset.attrib['id'])
 		return list
 
 	def username_to_id(self, username):
-		flickr = api(api_key=key, secret=secret)
-		usertree = flickr.people_findByUsername(api_key=key, username=username)
+		#flickr = api(api_key=key, secret=secret)
+		usertree = self.flickr.people_findByUsername(api_key=key, username=username)
 		return usertree[0].attrib['id']
 
 	def get_all_gps(self, username):
@@ -133,8 +137,8 @@ class photo_grabber(models.Model):
 		return coords
 
 	def get_url(self, photo_id):
-		flickr = api(api_key=key, secret=secret)
-		info = flickr.photos_getInfo(api_key=key, photo_id=photo_id)
+		#flickr = api(api_key=key, secret=secret)
+		info = self.flickr.photos_getInfo(api_key=key, photo_id=photo_id)
 		farm = info[0].attrib['farm']
 		server = info[0].attrib['server']
 		sec = info[0].attrib['secret']
