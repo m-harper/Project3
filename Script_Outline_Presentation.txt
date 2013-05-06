@@ -17,6 +17,7 @@ Features
 		anyone can pull if they have the account name
 	photos that do not have gps data are still displayed
 	if user doesn't exist, won't crash
+	place holder feature
 
 future of product / extensibility
 	timeline

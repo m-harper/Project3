@@ -137,12 +137,9 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
-    #'django.contrib.admindocs',
-    #'flickr',
-    #'mapPage'
+    #'django.contrib.admindocs',    
     'django.contrib.admindocs',
-    #used for google maps
-    #'django.contrib.gis',
+    
 )
 
 # A sample logging configuration. The only tangible logging
